@@ -1,19 +1,32 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('auth.login');
+
+// Route::get('/', function () {
+//     return view('auth.login');
+// });
+// Route::get('/register', function () {
+//     return view('auth.register');
+// });
+
+// Route::get('/dashboard', function () {
+//     return view('controlpanel.dashboard');
+// });
+
+// Route::get('/My', function () {
+//     return view('controlpanel.My');
+// });
+
+
+Route::get('/', [AuthController::class, 'login'])->name('login');
+Route::post('/login', [AuthController::class, 'login_process'])->name('login.process');
+Route::get('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/register', [AuthController::class, 'register_process'])->name('register_process');
+
+Route::get('/controlpanel', function () {
+    return view('controlpanel.dashboard');
 });
 
-Route::get('/register', function () {
-    return view('auth.register');
-});
 
-Route::get('/movies', function () {
-    return view('film');
-});
-
-Route::get('/favorite', function () {
-    return view('fav');
-});
