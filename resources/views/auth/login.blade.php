@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>Login &mdash; OMBD</title>
+  <title>{{ __('messages.login_title') }} &mdash; Stisla</title>
 
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{ asset('assets/modules/bootstrap/css/bootstrap.min.css')}}">
@@ -37,46 +37,46 @@
             </div>
 
             <div class="card card-primary">
-              <div class="card-header"><h4>Login</h4></div>
+              <div class="card-header"><h4>{{ __('messages.login_title') }}</h4></div>
 
               <div class="card-body">
-                <form method="POST" action="#" class="needs-validation" novalidate="">
+                <form method="POST" action="{{ route('signin') }}" >
+                  @csrf
                   <div class="form-group">
-                    <label for="email">Email</label>
-                    <input id="email" type="email" class="form-control" name="email" tabindex="1" required autofocus>
-                    <div class="invalid-feedback">
-                      Please fill in your email
-                    </div>
+                    <label for="email">{{ __('messages.login_email') }}</label>
+                    <input id="email" type="email" class="form-control" name="email" tabindex="1" autofocus>
+                    @error('email')
+                      <span class ="text-sm text-danger">{{ $message }}</span>
+                    @enderror
                   </div>
 
                   <div class="form-group">
                     <div class="d-block">
-                    	<label for="password" class="control-label">Password</label>
+                     	<label for="password" class="control-label">{{ __('messages.login_password') }}</label>
                     </div>
-                    <input id="password" type="password" class="form-control" name="password" tabindex="2" required>
-                    <div class="invalid-feedback">
-                      please fill in your password
-                    </div>
+                    <input id="password" type="password" class="form-control" name="password" tabindex="2">
+                    @error('password')
+                      <span class ="text-sm text-danger">{{ $message }}</span>
+                    @enderror
+                  </div>
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
+                      {{ __('messages.login_button') }}
+                    </button>
                   </div>
 
-
-                  <div class="form-group">
-                    <a href="{{ url('/movies') }}" class="btn btn-primary btn-lg btn-block" tabindex="4">
-                      Login
-                    </a>
-                    
-                    <!-- <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
-                      Login
-                    </button> -->
+                  <div class="form-group text-center">
+                    <span>{{ __('messages.language') }}:</span>
+                    <a href="{{ route('lang.switch', 'en') }}" class="btn btn-sm {{ app()->getLocale() === 'en' ? 'btn-primary' : 'btn-light' }}">EN</a>
+                    <a href="{{ route('lang.switch', 'id') }}" class="btn btn-sm {{ app()->getLocale() === 'id' ? 'btn-primary' : 'btn-light' }}">ID</a>
                   </div>
                 </form>
-                <div class="row sm-gutters">
-                </div>
 
               </div>
             </div>
+
             <div class="mt-5 text-muted text-center">
-              Don't have an account? <a href="{{ url('/register') }}">Create One</a>
+              {{ __('messages.login_no_account') }} <a href="{{ route('register') }}">{{ __('messages.login_create') }}</a>
             </div>
             <div class="simple-footer">
               Copyright &copy; Stisla <span id="year"></span>
@@ -95,14 +95,41 @@
   <script src="{{ asset('assets/modules/nicescroll/jquery.nicescroll.min.js')}}"></script>
   <script src="{{ asset('assets/modules/moment.min.js')}}"></script>
   <script src="{{ asset('assets/js/stisla.js')}}"></script>
-  
+
   <!-- JS Libraies -->
 
   <!-- Page Specific JS File -->
-  
+
   <!-- Template JS File -->
   <script src="{{ asset('assets/js/scripts.js')}}"></script>
   <script src="{{ asset('assets/js/custom.js')}}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  @if (@session()->has('success'))
+  <script>
+    Swal.fire({
+      text: "{{ session()->get('success')}}",
+      icon: "success",
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer:3000
+    })
+  </script>
+  @endif
+
+   @if (@session()->has('error'))
+  <script>
+    Swal.fire({
+      text: "{{ session()->get('error')}}",
+      icon: "error",
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer:3000
+    })
+  </script>
+  @endif
 
   <script>
     const year = document.getElementById('year');

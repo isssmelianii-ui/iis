@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>Ecommerce Dashboard &mdash; Stisla</title>
+  <title>{{ __('messages.dashboard_title') }} &mdash; Stisla</title>
 
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{asset('assets/modules/bootstrap/css/bootstrap.min.css')}}">
@@ -41,14 +41,22 @@
           </ul>
         </form>
         <ul class="navbar-nav navbar-right">
+          <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link nav-link-lg nav-link-user">
+              <i class="fas fa-globe"></i> {{ __('messages.language') }}
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+              <a href="{{ route('lang.switch', 'en') }}" class="dropdown-item {{ app()->getLocale() === 'en' ? 'active' : '' }}">{{ __('messages.english') }}</a>
+              <a href="{{ route('lang.switch', 'id') }}" class="dropdown-item {{ app()->getLocale() === 'id' ? 'active' : '' }}">{{ __('messages.bahasa') }}</a>
+            </div>
+          </li>
           <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
             <img alt="image" src="assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
-            <div class="d-sm-none d-lg-inline-block">King Dapa</div></a>
+            <div class="d-sm-none d-lg-inline-block">ISMEL</div></a>
             <div class="dropdown-menu dropdown-menu-right">
-              <div class="dropdown-title">Logged in 5 min ago</div>
+              <div class="dropdown-title">{{ __('messages.header_logged_in') }}</div>
               <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item has-icon text-danger">
-                <i class="fas fa-sign-out-alt"></i> Logout
+              <a href="{{ route('signout') }}" class="dropdown-item has-icon text-danger">
+                <i class="fas fa-sign-out-alt"></i> {{ __('messages.header_logout') }}
               </a>
             </div>
           </li>

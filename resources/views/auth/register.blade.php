@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>Register &mdash; Stisla</title>
+  <title>{{ __('messages.register_title') }} &mdash; Stisla</title>
 
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{ asset('assets/modules/bootstrap/css/bootstrap.min.css')}}">
@@ -28,16 +28,16 @@
             </div>
 
             <div class="card card-primary">
-              <div class="card-header"><h4>Register</h4></div>
+              <div class="card-header"><h4>{{ __('messages.register_title') }}</h4></div>
 
               <div class="card-body">
 
                 <!-- FORM -->
-                <form method="POST" action="{{ route('register_process') }}">
+                <form method="POST" action="{{ route('register') }}">
                   @csrf
 
                   <div class="form-group">
-                      <label for="full_name">Full Name</label>
+                      <label for="full_name">{{ __('messages.register_name') }}</label>
                       <input id="full_name" type="text" class="form-control" name="name" value="{{ old('name') }}">
 
                       @error('name')
@@ -46,7 +46,7 @@
                   </div>
 
                   <div class="form-group">
-                    <label for="email">Email</label>
+                    <label for="email">{{ __('messages.register_email') }}</label>
                     <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}">
 
                     @error('email')
@@ -56,20 +56,26 @@
 
                   <div class="row">
                     <div class="form-group col-6">
-                      <label>Password</label>
+                      <label>{{ __('messages.register_password') }}</label>
                       <input type="password" class="form-control" name="password">
                     </div>
 
                     <div class="form-group col-6">
-                      <label>Password Confirmation</label>
+                      <label>{{ __('messages.register_password_confirmation') }}</label>
                       <input type="password" class="form-control" name="password_confirmation">
                     </div>
                   </div>
 
                   <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-lg btn-block">
-                      Register
+                      {{ __('messages.register_button') }}
                     </button>
+                  </div>
+
+                  <div class="form-group text-center">
+                    <span>{{ __('messages.language') }}:</span>
+                    <a href="{{ route('lang.switch', 'en') }}" class="btn btn-sm {{ app()->getLocale() === 'en' ? 'btn-primary' : 'btn-light' }}">EN</a>
+                    <a href="{{ route('lang.switch', 'id') }}" class="btn btn-sm {{ app()->getLocale() === 'id' ? 'btn-primary' : 'btn-light' }}">ID</a>
                   </div>
 
                 </form>
@@ -77,7 +83,7 @@
             </div>
 
             <div class="mt-5 text-muted text-center">
-              have an account? <a href="{{ url('/login') }}">Sign here</a>
+              {{ __('messages.register_have_account') }} <a href="{{ route('login') }}">{{ __('messages.register_sign_here') }}</a>
             </div>
 
             <div class="simple-footer">

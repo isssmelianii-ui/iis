@@ -4,6 +4,9 @@ namespace App\Services;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log;
 
 class AuthService
 {
@@ -21,4 +24,26 @@ class AuthService
 
         return false;
     }
+
+    public function login($data)
+{
+    try {
+        if (Auth::attempt([
+            'email' => $data['email'],
+            'password' => $data['password']
+        ])) {
+            Session::put('logged_in', true);
+            return true;
+        };
+
+        return false;
+
+    } catch (\Exception $th) {
+        Log::error('Auth service login failed', [
+            'message' => $th->getMessage(),
+        ]);
+
+        return false;
+    }
+}
 }

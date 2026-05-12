@@ -37,11 +37,7 @@ class AuthController extends Controller
             'password' => [
                 'required',
                 'confirmed',
-                Password::min(8)
-                    ->letters()
-                    ->mixedCase()
-                    ->numbers()
-                    ->symbols(),
+                Password::min(8),
             ]
         ]);
 
@@ -64,6 +60,47 @@ class AuthController extends Controller
 
             return redirect()->back()
                 ->with('error', 'Registrasi gagal');
+        }
+    }
+    public function login_process(Request $request)
+    {
+        $validated = $request ->validate([
+            'email'     =>['required','email',],
+            'password'  =>['required']
+        ],[
+            'email.required'    =>'Email wajib diisi',
+            'email.email'       =>'Email tidak valid',
+            'email.exists'      =>'Email tidak terdaftar',
+            'password.required' =>'Password wajib diisi'
+        ]);
+        try{
+            $response =$this->authService->login($validated);
+            
+            if(!$response) {
+                return redirect()->back()->with('error','Kredensial tidak valid!');
+            }
+            return redirect()->route('dashboard')->with('success','Login berhasil');
+        } catch (\Throwable $th){
+            Log::error([
+                'Line'      =>$th->getLine(),
+                'file'      =>$th->getFile(),
+                'message'   =>$th->getMessage(),
+            ]);
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
+        }
+    }
+    public function logout()
+    {
+        try {
+            session()->flush();
+            return redirect('/')->with('success', 'Anda telah keluar');
+        } catch (\Throwable $th) {
+            Log::error([
+                'Line'      =>$th->getLine(),
+                'file'      =>$th->getFile(),
+                'message'   =>$th->getMessage(),
+            ]);
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 }
