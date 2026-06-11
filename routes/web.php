@@ -3,6 +3,9 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PanelControl\DashboardController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PanelControl\MovieController;
+use App\Http\Controllers\PanelControl\FavoriteController;
+use Illuminate\Support\Facades\Log;
 
 
 // Route::get('/', function () {
@@ -40,9 +43,15 @@ Route::middleware('setLocale')->group(function () {
 
     Route::prefix('panel_control')->middleware('checkLogin')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-        Route::get('/favorite', function () {
-            return view('controlpanel.my');
-        })->name('favorite');
+
+        Route::get('movies', [MovieController::class, 'index'])->name('movies.search');
+        Route::get('movies/{imdbId}', [MovieController::class, 'detail'])->name('movies.detail');
+
+        // Favorite Routes
+        Route::get('favorites', [FavoriteController::class, 'index'])->name('favorites.index');
+        Route::post('favorites', [FavoriteController::class, 'store'])->name('favorites.store');
+        Route::delete('favorites/{imdbId}', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
+        Route::get('/favorite', [FavoriteController::class, 'index'])->name('favorite');
     });
 });
 
